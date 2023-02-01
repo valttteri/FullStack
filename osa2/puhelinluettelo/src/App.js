@@ -1,29 +1,30 @@
-import { useState } from 'react'
-
-const Name = ( {person, filter} ) => { 
-  const nameLowerCase = person.name.toLowerCase()
-
-  if (filter === '') {
-  return(
-    <p>{person.name} {person.number}</p>
-  )
-  } else {
-    if (nameLowerCase.substr(0, filter.length) === filter || person.name.substr(0, filter.length) === filter) {
-      return(
-        <p>{person.name} {person.number}</p>
-      )  
-    }
-  }
-}
+import { useState, useEffect } from 'react'
+import personService from './services/Persons'
 
 const Persons = ( {persons, filter} ) => {
-  return (
-    <div>
-      {persons.map(person =>
-        <Name key={person.name} person={person} filter={filter}/>
-      )}
-    </div>
-  )  
+
+  if (filter === '') {
+    return (
+      <div>
+        {persons.map(person => (
+          <div key={person.name}>
+            <p>{person.name} {person.number} <button>delete</button></p>  
+          </div>
+        ))}
+      </div>
+    )  
+  } else {
+    const filteredPersons = persons.filter((person) => person.name.toLowerCase().substr(0, filter.length) === filter)
+    return (
+      <div>
+        {filteredPersons.map(person => (
+          <div key={person.name}>
+            <p>{person.name} {person.number} <button>delete</button></p>  
+          </div>
+        ))}
+      </div>
+    )
+  }
 }
 
 const PersonForm = ( {addPerson, newName, nameChange, newNumber, numberChange} ) => {
@@ -56,6 +57,17 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
 
+  useEffect(() => {
+    console.log('effect')
+    personService
+      .getAll()
+      .then(initialPersons => {
+        console.log('promise fulfilled')
+        setPersons(initialPersons)
+      })
+  }, [])
+  console.log(`render ${persons.length} notes`)
+
   //adds a new person to the array 'persons'
   const addPerson = (event) => {
     event.preventDefault()
@@ -70,9 +82,13 @@ const App = () => {
     if (namesOfPeople.includes(personObject.name)) {
       alert(`${personObject.name} is already added to phonebook`)
     } else {
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNewNumber('')
+      personService
+        .create(personObject)
+        .then(newPerson => {
+          setPersons(persons.concat(newPerson))
+          setNewName('')
+          setNewNumber('')
+        })
     }
   }
   //saves the name given by user
@@ -100,6 +116,5 @@ const App = () => {
     </div>
   )
 }
-
 
 export default App
