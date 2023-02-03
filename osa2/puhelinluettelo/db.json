@@ -11,19 +11,14 @@
       "id": 2
     },
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
+      "name": "Ville Vallaton",
+      "number": "111-333-444",
       "id": 3
     },
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
+      "name": "Roy Orbison",
+      "number": "1936-1988",
       "id": 4
-    },
-    {
-      "name": "Mikko Virtanen",
-      "number": "050-123-445",
-      "id": 5
     }
   ]
 }

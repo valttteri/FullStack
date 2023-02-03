@@ -1,25 +1,26 @@
 import { useState, useEffect } from 'react'
 import personService from './services/Persons'
 
-const Persons = ( {persons, filter} ) => {
-
+const Persons = ( {persons, filter, deletePerson} ) => {
+  //instance where no filter is applied
   if (filter === '') {
     return (
       <div>
         {persons.map(person => (
           <div key={person.name}>
-            <p>{person.name} {person.number} <button>delete</button></p>  
+            <p>{person.name} {person.number} <button onClick={() => deletePerson(person.id, person.name)}>delete</button></p>  
           </div>
         ))}
       </div>
     )  
   } else {
+    //instance where filter is applied
     const filteredPersons = persons.filter((person) => person.name.toLowerCase().substr(0, filter.length) === filter)
     return (
       <div>
         {filteredPersons.map(person => (
           <div key={person.name}>
-            <p>{person.name} {person.number} <button>delete</button></p>  
+            <p>{person.name} {person.number} <button onClick={() => deletePerson(person.id, person.name)}>delete</button></p>  
           </div>
         ))}
       </div>
@@ -52,21 +53,19 @@ const Filter = ( {newFilter, filterChange} ) => {
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([]) 
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
 
+  //render initial contacts
   useEffect(() => {
-    console.log('effect')
     personService
       .getAll()
       .then(initialPersons => {
-        console.log('promise fulfilled')
         setPersons(initialPersons)
       })
   }, [])
-  console.log(`render ${persons.length} notes`)
 
   //adds a new person to the array 'persons'
   const addPerson = (event) => {
@@ -79,9 +78,15 @@ const App = () => {
     const namesOfPeople = persons.map(person => person.name)
 
     //check if the person already exists in the phonebook
-    if (namesOfPeople.includes(personObject.name)) {
-      alert(`${personObject.name} is already added to phonebook`)
+    if (namesOfPeople.includes(personObject.name) && (window.confirm(`${personObject.name} is already in the phonebook. Replace number?`))) {
+      const existingPerson = persons.find(person => person.name === personObject.name)
+      personService
+        .update(existingPerson.id, personObject)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== response.id ? person : response))
+      })
     } else {
+      //add a new person
       personService
         .create(personObject)
         .then(newPerson => {
@@ -102,7 +107,18 @@ const App = () => {
   //saves the filter given by user
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
-    console.log(newFilter)
+  }
+
+  const deletePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      personService
+      .remove(id)
+      .then(response => {
+        const filteredPersons = persons.filter(person => person.id !== id)
+        setPersons(filteredPersons)
+      })
+    }
+      
   }
 
   return (
@@ -112,9 +128,36 @@ const App = () => {
         <PersonForm addPerson={addPerson} newName={newName} nameChange={handleNameChange}
         newNumber={newNumber} numberChange={handleNumberChange}/>
       <h3>Numbers</h3>
-        <Persons persons={persons} filter={newFilter}/>
+        <Persons persons={persons} filter={newFilter} deletePerson={deletePerson}/>
     </div>
   )
 }
 
 export default App
+
+/*
+{
+  "persons":[
+    { 
+      "name": "Arto Hellas", 
+      "number": "040-123456",
+      "id": 1
+    },
+    { 
+      "name": "Ada Lovelace", 
+      "number": "39-44-5323523",
+      "id": 2
+    },
+    { 
+      "name": "Dan Abramov", 
+      "number": "12-43-234345",
+      "id": 3
+    },
+    { 
+      "name": "Mary Poppendieck", 
+      "number": "39-23-6423122",
+      "id": 4
+    }
+  ]
+}
+*/
