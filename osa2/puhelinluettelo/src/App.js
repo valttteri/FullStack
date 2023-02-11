@@ -105,7 +105,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
         <Notification message={errorMessage} type={errorType}/>
         <Filter newFilter={newFilter} filterChange={handleFilterChange}/>
         <PersonForm addPerson={addPerson} newName={newName} nameChange={handleNameChange}
@@ -116,4 +116,5 @@ const App = () => {
   )
 }
 
+//copy build to backend: cp -r build ../../../FullStackPart3/puhelinluettelo
 export default App
