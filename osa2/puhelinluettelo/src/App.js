@@ -57,6 +57,10 @@ const App = () => {
           setErrorType('positive')
           setErrorMessage(`${personObject.name} added to phonebook`)
         })
+        .catch(error => {
+          setErrorType('negative')
+          setErrorMessage(error.response.data.error)
+        })
     }
 
     setNewName('')
@@ -116,5 +120,4 @@ const App = () => {
   )
 }
 
-//copy build to backend: cp -r build ../../../FullStackPart3/puhelinluettelo
 export default App
