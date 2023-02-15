@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 { 
-"title": "Day in a life",
-"author": "Valtteri Ahola",
-"url": "www.osoite.fi",
-"likes": 678
+"title": "It's my life",
+"author": "J.B. Jovi",
+"url": "www.abc.com",
+"likes": 123
 }
