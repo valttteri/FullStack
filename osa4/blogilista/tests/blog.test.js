@@ -1,42 +1,129 @@
 const listHelper = require('../utils/list_helper')
 
-const blogs = [
+const allBlogs = [
   {
-    'title': 'Day in a life',
-    'author': 'Valtteri Ahola',
-    'url': 'www.osoite.fi',
-    'likes': 678,
-    'id': '63ebbc36ee93eeed18f32caa'
+    _id: '5a422a851b54a676234d17f7',
+    title: 'React patterns',
+    author: 'Michael Chan',
+    url: 'https://reactpatterns.com/',
+    likes: 7,
+    __v: 0
   },
   {
-    'title': 'Deep thoughts',
-    'author': 'Mr Bean',
-    'url': 'www.address.com',
-    'likes': 543,
-    'id': '63ebc49ed2e7c1840c93a514'
+    _id: '5a422aa71b54a676234d17f8',
+    title: 'Go To Statement Considered Harmful',
+    author: 'Edsger W. Dijkstra',
+    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+    likes: 5,
+    __v: 0
   },
   {
-    'title': 'Something something',
-    'author': 'Napoleon',
-    'url': 'www.address.com',
-    'likes': 543,
-    'id': '63ebc6fed3f51b393b468d89'
+    _id: '5a422b3a1b54a676234d17f9',
+    title: 'Canonical string reduction',
+    author: 'Edsger W. Dijkstra',
+    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+    likes: 12,
+    __v: 0
   },
   {
-    'title': 'Its my life',
-    'author': 'J.B. Jovi',
-    'url': 'www.abc.com',
-    'likes': 123,
-    'id': '63ec905ed8f79bccc2a0f0bf'
+    _id: '5a422b891b54a676234d17fa',
+    title: 'First class tests',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+    likes: 10,
+    __v: 0
+  },
+  {
+    _id: '5a422ba71b54a676234d17fb',
+    title: 'TDD harms architecture',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+    likes: 0,
+    __v: 0
+  },
+  {
+    _id: '5a422bc61b54a676234d17fc',
+    title: 'Type wars',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+    likes: 2,
+    __v: 0
   }
 ]
 
-test('dummy returns one', () => {
-  const result = listHelper.dummy(blogs)
-  expect(result).toBe(1)
+const oneBlog = [
+  {
+    _id: '5a422bc61b54a676234d17fc',
+    title: 'Type wars',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+    likes: 2,
+    __v: 0
+  }
+]
+
+const noBlogs = []
+
+describe('dummy test', () => {
+  test('returns always one', () => {
+    const result = listHelper.dummy()
+    expect(result).toBe(1)
+  })
 })
 
-test('total likes of blogs', () => {
-  const result = listHelper.totalLikes(blogs)
-  expect(result).toBe(1887)
+describe('total likes', () => {
+  test('when given an empty list of blogs is zero', () => {
+    const result = listHelper.totalLikes(noBlogs)
+    expect(result).toBe(0)
+  })
+
+  test('when given a single blog', () => {
+    const result = listHelper.totalLikes(oneBlog)
+    expect(result).toBe(2)
+  })
+
+
+  test('when given a list of multiple blogs', () => {
+    const result = listHelper.totalLikes(allBlogs)
+    expect(result).toBe(36)
+  })
+})
+
+describe('favourite blog', () => {
+  test('when given an empty list of blogs is null', () => {
+    const result = listHelper.favouriteBlog(noBlogs)
+    expect(result).toEqual(null)
+  })
+
+  test('when given a list of blogs', () => {
+    const result = listHelper.favouriteBlog(allBlogs)
+    const expected = {
+      'title': 'Canonical string reduction',
+      'author': 'Edsger W. Dijkstra',
+      'likes': 12,
+    }
+    expect(result).toEqual(expected)
+  })
+})
+
+describe('blogger with most blogs', () => {
+  test('in a list of blogs', () => {
+    const result = listHelper.mostBlogs(allBlogs)
+    const expected = {
+      'author': 'Robert C. Martin',
+      'blogs': 3
+    }
+    expect(result).toEqual(expected)
+  })
+})
+
+describe('blogger with most likes', () => {
+  test('in a list of blogs', () => {
+    const result = listHelper.mostLikes(allBlogs)
+    const expected = {
+      'author': 'Edsger W. Dijkstra',
+      'likes': 17
+    }
+    expect(result).toEqual(expected)
+  })
 })
