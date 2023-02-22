@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 { 
-"title": "It's my life",
-"author": "J.B. Jovi",
-"url": "www.abc.com",
-"likes": 123
+"title": "Hello guys",
+"author": "Ya boi",
+"url": "www.aaa.com",
+"likes": 16
 }

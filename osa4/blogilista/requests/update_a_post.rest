@@ -1,0 +1,10 @@
+PUT http://localhost:3003/api/blogs/63f5ef14302bc4756fe7dcd2
+Content-Type: application/json
+
+{ 
+"title": "Whats up guys",
+"author": "Ya boi",
+"url": "www.ddd.com",
+"likes": 222,
+"id": "63f5ef14302bc4756fe7dcd2"
+}

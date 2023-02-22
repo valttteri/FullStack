@@ -20,7 +20,7 @@ const errorHandler = (error, req, res, next) => {
   } else if (error.name === 'ValidationError') {
     return res.status(400).json({ error: error.message })
   } else {
-    res.status(500).send( { message: 'Somethings wrong, I can feel it' } )
+    res.status(400).send( { message: 'Somethings wrong, I can feel it' } )
   }
   next(error)
 }
