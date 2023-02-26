@@ -3,6 +3,7 @@ const supertest = require('supertest')
 const Blog = require('../models/blog')
 const app = require('../app')
 const { allBlogs, oneBlog, noBlogs } = require('./blog_list')
+const helper = require('../utils/list_helper')
 
 const api = supertest(app)
 
@@ -99,41 +100,19 @@ test('a blog can be updated', async () => {
     title: 'Canonical string reduction',
     author: 'Edsger W. Dijkstra',
     url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
-    likes: 66
+    likes: 30
   }
 
   await api
     .put(`/api/blogs/${blogToUpdate.id}`)
-    .send( { likes: 66 })
+    .send( { likes: blogToUpdate.likes } )
     .expect(200)
 
-  const blogsAtEnd = await api.get('/api/blogs')
-  const updatedBlog = Object.entries(blogsAtEnd.body).filter((blog) => blog[1].id === blogToUpdate.id)
+  const blogsAtEnd = await helper.blogsInDb()
+  const updatedBlog = blogsAtEnd.filter(b => b.id === blogToUpdate.id)
 
-  expect(updatedBlog[0][1].likes).toBe(blogToUpdate.likes)
+  expect(updatedBlog[0].likes).toBe(blogToUpdate.likes)
 })
-
-/*
-app.put('/api/persons/:id', (req, res, next) => {
-  const body = req.body
-
-  const person = {
-    name: body.name,
-    number: body.number
-  }
-
-  Person.findByIdAndUpdate(
-    req.params.id,
-    person,
-    { new: true }
-  )
-    .then(updatedPerson => {
-      res.json(updatedPerson)
-    })
-    .catch(error => next(error))
-})
-*/
-
 
 afterAll(async () => {
   await mongoose.connection.close()
