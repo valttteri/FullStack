@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9za3UxIiwiaWQiOiI2M2ZkZTU2NzRkOGUxOTUwNzlhZjg4MzIiLCJpYXQiOjE2Nzc1ODg2NTN9.JBunYvHOPnZXwTZArHdl8CyS32IxEVBgQyx7CjP_KVw
 
 { 
-"title": "Sunday morning",
-"author": "J.R. Cash",
-"url": "www.arkns.com",
-"likes": 27,
-"userId": "63fcc54f5cffc348a1e47194"
+"title": "Oskun keskivertoläpät",
+"author": "O.S.",
+"url": "www.mmm.com",
+"likes": 555
 }

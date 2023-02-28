@@ -1,6 +1,16 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
+const { tokenExtractor } = require('../utils/middleware')
+
+const getTokenFrom = req => {
+  const authorization = req.get('Authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  return null
+}
 
 //render initial posts to back end
 blogRouter.get('/', async (req, res) => {
@@ -9,32 +19,15 @@ blogRouter.get('/', async (req, res) => {
 })
 
 //create a new post
-/*
-blogRouter.post('/', (req, res) => {
-  const blog = new Blog(req.body)
-
-  if (req.body.title === undefined || req.body.url === undefined) {
-    res.status(400).json( { error: 'blog content missing' } )
-  } else {
-    blog.save().then(result => {
-      res.status(201).json(result)
-    })
-  }
-})
-
-{
-"title": "Tuesday morning",
-"author": "A.B.",
-"url": "www.fff.com",
-"likes": 26
-}
-*/
-
-//create a new post
 blogRouter.post('/', async (req, res) => {
   const body = req.body
+  //const token = req.token
 
-  const user = await User.findById(body.userId)
+  const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET)
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: 'token invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
 
   const blog = new Blog({
     title: body.title,
