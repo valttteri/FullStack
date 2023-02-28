@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const bcrypt = require('bcryptjs')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const app = require('../app')
 const { allBlogs, oneBlog, noBlogs } = require('./blog_list')
 const helper = require('../utils/list_helper')
@@ -112,6 +114,35 @@ test('a blog can be updated', async () => {
   const updatedBlog = blogsAtEnd.filter(b => b.id === blogToUpdate.id)
 
   expect(updatedBlog[0].likes).toBe(blogToUpdate.likes)
+})
+
+describe('when at least one user is saved to db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const user = new User({
+      name: 'Jim Root',
+      username: 'numberfive',
+      passwordHash: 'password'
+    })
+
+    await user.save()
+  })
+
+  test.only('a faulty user cannot be created', async () => {
+    const faultyUser = {
+      name: 'Mikko',
+      passwordHash: 'salasana'
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(faultyUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body.error).toContain('user content missing or invalid')
+  })
 })
 
 afterAll(async () => {
