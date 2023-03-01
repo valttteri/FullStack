@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9za3UxIiwiaWQiOiI2M2ZkZTU2NzRkOGUxOTUwNzlhZjg4MzIiLCJpYXQiOjE2Nzc1ODg2NTN9.JBunYvHOPnZXwTZArHdl8CyS32IxEVBgQyx7CjP_KVw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZpbGxlMSIsImlkIjoiNjNmZjBkN2JhZTlhNTdmZGE2YzUwMWYxIiwiaWF0IjoxNjc3NjU5NTM5fQ.OzgMy8MvjACTXa6-vx8ZUnNL_KhvQXd43sWYViprV68
 
 { 
-"title": "Oskun keskivertoläpät",
-"author": "O.S.",
-"url": "www.mmm.com",
-"likes": 555
+"title": "Villen vitsit",
+"author": "V.V.",
+"url": "www.vvv.com",
+"likes": 22
 }

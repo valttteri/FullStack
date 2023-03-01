@@ -2,15 +2,6 @@ const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
-const { tokenExtractor } = require('../utils/middleware')
-
-const getTokenFrom = req => {
-  const authorization = req.get('Authorization')
-  if (authorization && authorization.startsWith('Bearer ')) {
-    return authorization.replace('Bearer ', '')
-  }
-  return null
-}
 
 //render initial posts to back end
 blogRouter.get('/', async (req, res) => {
@@ -18,12 +9,23 @@ blogRouter.get('/', async (req, res) => {
   res.json(blogs)
 })
 
+//render a single blog
+blogRouter.get('/:id', async (req, res) => {
+  const blog = await Blog.findById(req.params.id).populate('user', { name: 1, username: 1 })
+
+  if (blog) {
+    res.json(blog)
+  } else {
+    res.status(404).end()
+  }
+})
+
 //create a new post
 blogRouter.post('/', async (req, res) => {
   const body = req.body
-  //const token = req.token
+  const token = req.token
 
-  const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
   if (!decodedToken.id) {
     return res.status(401).json({ error: 'token invalid' })
   }
@@ -46,8 +48,6 @@ blogRouter.post('/', async (req, res) => {
 
     res.json(savedBlog)
   }
-
-
 })
 
 //delete a post
