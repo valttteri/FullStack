@@ -129,7 +129,7 @@ describe('when at least one user is saved to db', () => {
     await user.save()
   })
 
-  test.only('a faulty user cannot be created', async () => {
+  test('a faulty user cannot be created', async () => {
     const faultyUser = {
       name: 'Mikko',
       passwordHash: 'salasana'
