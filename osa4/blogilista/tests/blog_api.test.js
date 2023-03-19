@@ -9,6 +9,7 @@ const helper = require('../utils/list_helper')
 
 const api = supertest(app)
 
+//this shi is broken af my man
 describe('when at least one blog is saved to db', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
