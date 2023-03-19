@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -8,7 +9,8 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorType, setErrorType] = useState(null) 
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
@@ -40,23 +42,34 @@ const App = () => {
         'loggedUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
+      setErrorMessage(`${user.username} logged in`) 
+      setErrorType('positive')
       setUser(user)
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('invalid username or password')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      setErrorMessage('Invalid username or password')
+      setErrorType('negative')
     }
-  }
+  setTimeout(() => {
+    setErrorMessage(null)
+    setErrorType(null)
+  }, 4000)
+}
 
   const handleLogout = async (event) => {
     event.preventDefault()
+    setErrorMessage(`${user.username} logged out`)
+    setErrorType('positive')
     setUser(null)
     window.localStorage.removeItem('loggedUser')
+    setTimeout(() => {
+      setErrorMessage(null)
+      setErrorType(null)
+    }, 4000)
   }
 
+  //add a new post
   const addPost = async (event) => {
     event.preventDefault()
 
@@ -65,18 +78,31 @@ const App = () => {
       author: newAuthor,
       url: newUrl
     }
-
-    blogService.createPost(blogObject)
+    //check if input is valid
+    if (newAuthor === '' || newTitle === '') {
+      setErrorMessage('Invalid input')
+      setErrorType('negative')
+    } else {
+      blogService.createPost(blogObject)
+      setErrorMessage(`created a new blog "${blogObject.title}" by author ${blogObject.author} added`)
+      setErrorType('positive')
+    }
 
     setNewAuthor('')
     setNewTitle('')
     setNewUrl('')
+
+    setTimeout(() => {
+      setErrorMessage(null)
+      setErrorType(null)
+    }, 4000)
   }
 
   if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification message={errorMessage} type={errorType}/>
         <form onSubmit={handleLogin}>
         <div>
           username:  
@@ -105,6 +131,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={errorMessage} type={errorType}/>
       <p>{user.username} logged in <button onClick={handleLogout}>log out</button></p>
       <h3>create a new post</h3>
       <form onSubmit={addPost}>

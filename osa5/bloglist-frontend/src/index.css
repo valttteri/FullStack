@@ -1,0 +1,20 @@
+.goodError {
+    color: black;
+    background: rgb(61, 189, 23);
+    font-size: 20px;
+    border-style: dotted solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-right: 5px;
+  }
+.badError {
+    color: black;
+    background: red;
+    font-size: 20px;
+    border-style: dotted solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-right: 5px;
+}
