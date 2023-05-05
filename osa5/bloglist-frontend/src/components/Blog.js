@@ -25,7 +25,7 @@ const Blog = ({ blog, addLike, deletePost }) => {
 
   const handleRemove = async (event) => {
     event.preventDefault()
-    deletePost(blog.id, blog.author)
+    deletePost(blog.id, blog.title)
   }
 
   //all blog info is visible

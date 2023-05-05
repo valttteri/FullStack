@@ -86,10 +86,14 @@ const App = () => {
       setErrorMessage('Invalid input')
       setErrorType('negative')
     } else {
+
+      //After adding a new blog, fetch all blogs with getAll before updating the blog list with setBlogs. This way the problem in exercise 8 can be avoided
       await blogService.createPost(blogObject)
-      //key warning probably caused by next line
-      setBlogs(blogs.concat(blogObject))
+      const allBlogs = await blogService.getAll()
+      setBlogs(allBlogs)
+
       blogFormRef.current.toggleVisibility()
+
       setErrorMessage(`created a new blog "${blogObject.title}" by author ${blogObject.author} added`)
       setErrorType('positive')
     }
@@ -101,9 +105,22 @@ const App = () => {
   }
 
   const deletePost = async (id, name) => {
-    await blogService.removePost(id)
-    const filteredBlogs = blogs.filter(blog => blog.id !== id)
-    setBlogs(filteredBlogs)
+    if (window.confirm(`Delete ${name}?`)) {
+      try {
+        await blogService.removePost(id)
+        const filteredBlogs = blogs.filter(blog => blog.id !== id)
+        setBlogs(filteredBlogs)
+        setErrorType('positive')
+        setErrorMessage(`${name} removed`)
+      } catch (error) {
+        setErrorType('negative')
+        setErrorMessage('Something went wrong')
+      }
+      setTimeout(() => {
+        setErrorMessage(null)
+        setErrorType(null)
+      }, 4000)
+    }
   }
 
   const addLike = async (likedPost) => {
