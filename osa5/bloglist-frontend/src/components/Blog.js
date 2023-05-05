@@ -1,13 +1,31 @@
-import { useState, useRef } from "react"
-import Togglable from "./Togglable"
+import { useState } from "react"
 
-
-const Blog = ({ blog }) => {
+const Blog = ({ blog, addLike, deletePost }) => {
   const [visibility, setVisibility] = useState(false)
+  //console.log(blog)
 
   const handleClick = async (event) => {
     event.preventDefault()
     setVisibility(!visibility)
+  }
+
+  const handleLiking = async (event) => {
+    event.preventDefault()
+    var likedPost = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+      id: blog.id,
+      user: blog.user.id
+    }
+    
+    addLike(likedPost)
+  }
+
+  const handleRemove = async (event) => {
+    event.preventDefault()
+    deletePost(blog.id, blog.author)
   }
 
   //all blog info is visible
@@ -18,8 +36,9 @@ const Blog = ({ blog }) => {
           <li>{blog.title} <button onClick={handleClick}>hide</button></li>
           <li>author: {blog.author}</li>
           <li>url: {blog.url}</li>
-          <li>likes: {blog.likes}</li>
+          <li>likes: {blog.likes} <button onClick={handleLiking}>like</button></li>
         </ul>
+        <p><button onClick={handleRemove}>delete</button></p>
       </div> 
     )
   }
@@ -33,43 +52,3 @@ const Blog = ({ blog }) => {
 }
 
 export default Blog
-
-/*
-
-const blogFormRef = useRef()
-  const listStyle = { "listStyleType": 'none'}
-  console.log(blog)
-  
-  return(
-    <div>
-      {blog.title} 
-      <Togglable buttonLabel1='show' buttonLabel2='hide' ref={blogFormRef}>
-      <ul style={listStyle}>
-        <li>{blog.author}</li>
-        <li>{blog.url}</li>
-        <li>{blog.likes}</li>
-      </ul>
-      </Togglable>
-    </div> 
-  )
-
-return (
-    <div>
-      <h2>blogs</h2>
-      <Notification 
-      message={errorMessage} 
-      type={errorType}
-      />
-      <p>{user.username} logged in <button onClick={handleLogout}>log out</button></p>
-      <Togglable buttonLabel='new post' ref={blogFormRef}>
-        <BlogForm
-        addPost={addPost}
-        />
-      </Togglable>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-    </div>
-  )
-
-*/

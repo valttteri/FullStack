@@ -8,8 +8,8 @@ const BlogForm = ({ addPost }) => {
 
   const handlePostCreating = (event) => {
     event.preventDefault()
-    const blogLikes = 0
-    addPost(newTitle, newAuthor, newUrl, blogLikes)
+    //let blogLikes = 0
+    addPost(newTitle, newAuthor, newUrl)
 
     setNewAuthor('')
     setNewTitle('')

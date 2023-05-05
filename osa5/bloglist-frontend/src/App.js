@@ -74,13 +74,12 @@ const App = () => {
   }
 
   //add a new post
-  const addPost = async (newTitle, newAuthor, newUrl, blogLikes) => {
+  const addPost = async (newTitle, newAuthor, newUrl) => {
 
     const blogObject = {
       title: newTitle,
       author: newAuthor,
-      url: newUrl,
-      likes: blogLikes
+      url: newUrl
     }
     //check if input is valid
     if (newAuthor === '' || newTitle === '') {
@@ -99,6 +98,23 @@ const App = () => {
       setErrorMessage(null)
       setErrorType(null)
     }, 4000)
+  }
+
+  const deletePost = async (id, name) => {
+    await blogService.removePost(id)
+    const filteredBlogs = blogs.filter(blog => blog.id !== id)
+    setBlogs(filteredBlogs)
+  }
+
+  const addLike = async (likedPost) => {
+    try {
+      await blogService.likePost(likedPost)
+      const updatedPosts = await blogService.getAll()
+      setBlogs(updatedPosts)
+    } catch (error) {
+      console.log("cannot like")
+    }
+
   }
 
   if (user === null) {
@@ -131,8 +147,10 @@ const App = () => {
         addPost={addPost}
         />
       </Togglable>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+      {blogs
+        .sort((a, b) => a.likes < b.likes ? 1: -1)
+        .map(blog =>
+        <Blog key={blog.id} blog={blog} addLike={addLike} deletePost={deletePost}/>
       )}
     </div>
   )
