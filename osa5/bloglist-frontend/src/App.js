@@ -74,12 +74,13 @@ const App = () => {
   }
 
   //add a new post
-  const addPost = async (newTitle, newAuthor, newUrl) => {
+  const addPost = async (newTitle, newAuthor, newUrl, blogLikes) => {
 
     const blogObject = {
       title: newTitle,
       author: newAuthor,
-      url: newUrl
+      url: newUrl,
+      likes: blogLikes
     }
     //check if input is valid
     if (newAuthor === '' || newTitle === '') {
@@ -125,7 +126,7 @@ const App = () => {
       type={errorType}
       />
       <p>{user.username} logged in <button onClick={handleLogout}>log out</button></p>
-      <Togglable buttonLabel='new post' ref={blogFormRef}>
+      <Togglable buttonLabel1='new post' buttonLabel2='cancel' ref={blogFormRef}>
         <BlogForm
         addPost={addPost}
         />
