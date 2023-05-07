@@ -11,7 +11,13 @@ describe('Blog component tests', () => {
     url: 'www.url.com',
     likes: 123,
     id: '1234',
-    user: '5678'
+    user: {
+      username: 'mikko'
+    }
+  }
+
+  const user = {
+    username: 'mikko'
   }
 
   const clickHandler = jest.fn()
@@ -20,7 +26,7 @@ describe('Blog component tests', () => {
 
   beforeEach(() => {
     render(
-      <Blog key={blog.id} blog={blog} clickHandler={clickHandler} likeHandler={likeHandler} addLike={addLike} />
+      <Blog key={blog.id} user={user} blog={blog} clickHandler={clickHandler} likeHandler={likeHandler} addLike={addLike} />
     )
   })
 

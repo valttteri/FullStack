@@ -94,7 +94,7 @@ const App = () => {
 
       blogFormRef.current.toggleVisibility()
 
-      setErrorMessage(`created a new blog "${blogObject.title}" by author ${blogObject.author} added`)
+      setErrorMessage(`created a new blog by author ${blogObject.author}`)
       setErrorType('positive')
     }
 
@@ -111,7 +111,7 @@ const App = () => {
         const filteredBlogs = blogs.filter(blog => blog.id !== id)
         setBlogs(filteredBlogs)
         setErrorType('positive')
-        setErrorMessage(`${name} removed`)
+        setErrorMessage('Removed a blog successfully')
       } catch (error) {
         setErrorType('negative')
         setErrorMessage('Something went wrong')
@@ -167,7 +167,7 @@ const App = () => {
       {blogs
         .sort((a, b) => a.likes < b.likes ? 1: -1)
         .map(blog =>
-          <Blog key={blog.id} blog={blog} addLike={addLike} deletePost={deletePost}/>
+          <Blog key={blog.id} user={user} blog={blog} addLike={addLike} deletePost={deletePost}/>
         )}
     </div>
   )

@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import DeleteButton from './Button'
 
-const Blog = ({ blog, addLike, deletePost }) => {
+const Blog = ({ user, blog, addLike, deletePost }) => {
   const [visibility, setVisibility] = useState(false)
-  //console.log(blog)
 
   const handleClick = async (event) => {
     event.preventDefault()
@@ -38,7 +38,7 @@ const Blog = ({ blog, addLike, deletePost }) => {
           <li>url: {blog.url}</li>
           <li>likes: {blog.likes} <button onClick={handleLiking}>like</button></li>
         </ul>
-        <p><button onClick={handleRemove}>delete</button></p>
+        <DeleteButton user={user} blog={blog} handleRemove={handleRemove}/>
       </div>
     )
   }
