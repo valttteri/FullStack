@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2tvMSIsImlkIjoiNjNmZGU1NDk0ZDhlMTk1MDc5YWY4ODJlIiwiaWF0IjoxNjc3NjY1ODg1fQ._mdWfdippICik5vCXmeCuV3wPJQckv6IsaYbtlVN4dE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2tvMSIsImlkIjoiNjNmZGU1NDk0ZDhlMTk1MDc5YWY4ODJlIiwiaWF0IjoxNjgzMjgzNjQwfQ.aZ321nD-l5zqUc0xQ4DscncsRZkXEbkijMMneTe_8LE
 
 { 
-"title": "Mikon mietiskelyt",
+"title": "Mikko taas",
 "author": "M.M.",
 "url": "www.nmn.com",
-"likes": 23
+"likes": 22
 }

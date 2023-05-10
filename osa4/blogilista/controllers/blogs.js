@@ -63,6 +63,7 @@ blogRouter.delete('/:id', async (req, res) => {
 
   if (blogId === userId) {
     await Blog.findByIdAndRemove(req.params.id)
+    res.json(blogToDelete)
     res.status(204).end
   } else {
     res.status(400).json( { error: 'incorrect token' } )
