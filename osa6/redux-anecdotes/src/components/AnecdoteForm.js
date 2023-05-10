@@ -8,7 +8,7 @@ const AnecdoteForm = () => {
   const newAnecdote = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
-        
+    event.target.anecdote.value = ''
     dispatch(createNewAnecdote(content))
   }
     
@@ -16,8 +16,8 @@ const AnecdoteForm = () => {
     <div>
       <h2>create new</h2>
       <form onSubmit={(newAnecdote)}> 
-          <div><input name='anecdote'/></div>
-          <button type='submit'>create</button>
+        <div><input name='anecdote'/></div>
+        <button type='submit'>create</button>
       </form>
     </div>
   )

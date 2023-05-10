@@ -14,10 +14,11 @@ const AnecdoteList = () => {
   const vote = (id) => {
     dispatch(voteAnecdote(id))
   }
- 
+
   return (
     <div>
       {anecdotes
+        .slice()
         .sort((a, b) => a.votes <= b.votes ? 1 : -1)
         .map(anecdote =>
         <div key={anecdote.id}>
