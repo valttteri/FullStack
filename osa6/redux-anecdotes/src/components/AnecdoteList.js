@@ -12,31 +12,37 @@ const AnecdoteList = () => {
     return state.anecdotes.filter(a => a.content.includes(state.filter) === true)
   })
 
-  const vote = (anecdote) => {
-    dispatch(voteAnecdote(anecdote.id))
-    dispatch(controlNotification(anecdote.content))
+  const vote = (id, content) => {
+    dispatch(voteAnecdote(id))
+    dispatch(controlNotification(content))
     setTimeout(() => {
       dispatch(controlNotification('hide'))
     }, 5000)
   }
 
-  return (
-    <div>
-      {anecdotes
-        .slice()
-        .sort((a, b) => a.votes <= b.votes ? 1 : -1)
-        .map(anecdote =>
-        <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
-          </div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote)}>vote</button>
-          </div>
+  const Anecdote = ({ vote, anecdote }) => {
+    return (
+      <div>
+        <div>
+          {anecdote.content}
         </div>
-      )}    
-    </div>
+        <div>
+          has {anecdote.votes}
+          <button onClick={() => vote(anecdote.id, anecdote.content)}>vote</button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    anecdotes
+      .slice()
+      .sort((a, b) => a.votes <= b.votes ? 1 : -1)
+      .map((anecdote) =>
+      <div key={anecdote.id}>
+        <Anecdote key={anecdote.id} anecdote={anecdote} vote={vote} />
+      </div>
+    )    
   )
 }
 
