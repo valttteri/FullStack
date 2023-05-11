@@ -7,30 +7,20 @@ const notificationSlice = createSlice({
   initialState,
   reducers: {
     controlNotification(state, action) {
+      //console.log(action.payload)
       return state = action.payload
     }
   }
 })
+
+export const setNotification = (message, time) => {
+  return async dispatch => {
+    dispatch(controlNotification(message))
+    setTimeout(() => {
+      dispatch(controlNotification('hide'))
+    }, time*1000)
+  }
+}
 
 export const { controlNotification } = notificationSlice.actions
 export default notificationSlice.reducer
-
-
-/*
-
-const filterSlice = createSlice({
-  name: 'filter',
-  initialState,
-  reducers: {
-    filterChange(state, action) {
-      console.log('filter state: ', state)
-      console.log('filter action', action)
-      return state = action.payload
-    }
-  }
-})
-
-export const { filterChange } = filterSlice.actions
-export default filterSlice.reducer
-
-*/

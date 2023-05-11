@@ -6,10 +6,7 @@ const anecdoteSlice = createSlice({
   initialState: [],
   reducers: {
     addVote(state, action) {
-      console.log(JSON.parse(JSON.stringify(state)))
-      console.log(JSON.parse(JSON.stringify(action)))
-      
-      console.log('payload: ', action.payload)
+      //console.log('payload: ', action.payload)
       const id = action.payload.id
       const votedAnecdote = action.payload
 
