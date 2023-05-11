@@ -1,36 +1,40 @@
-import { useQuery } from 'react-query'
-import axios from 'axios'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { getAnecdotes, updateAnecdote } from './requests'
 
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 
 const App = () => {
+  
+  const queryClient = useQueryClient()
+
+  const newAnecdoteMutation = useMutation(updateAnecdote, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('anecdotes')
+    }
+  })
 
   const handleVote = (anecdote) => {
-    console.log('vote')
+    const votedAnecdote = {
+      content: anecdote.content,
+      id: anecdote.id,
+      votes: anecdote.votes + 1
+    }
+    newAnecdoteMutation.mutate(votedAnecdote)
   }
 
-  //const anecdotes = [
-  //  {
-  //    "content": "If it hurts, do it more often",
-  //    "id": "47145",
-  //    "votes": 0
-  //  },
-  //]
-  
   const result = useQuery(
     'anecdotes',
-    () => axios.get('http://localhost:3001/anecdotes').then(res => res.data),
+    getAnecdotes,
     {
       retry: false
     }
   )
-  console.log(result)
+  console.log('result:', result)
 
   if ( result.isLoading ) {
     return <div>loading data...</div>
   }
-
   if ( result.error ) {
     return <div>unable to load page</div>
   }
