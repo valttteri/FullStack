@@ -6,8 +6,8 @@ const anecdoteSlice = createSlice({
   initialState: [],
   reducers: {
     addVote(state, action) {
-      //console.log(JSON.parse(JSON.stringify(state)))
-      //console.log(JSON.parse(JSON.stringify(action)))
+      console.log(JSON.parse(JSON.stringify(state)))
+      console.log(JSON.parse(JSON.stringify(action)))
       
       console.log('payload: ', action.payload)
       const id = action.payload.id
@@ -61,23 +61,6 @@ export const voteAnecdote = (id, content, votes) => {
     dispatch(addVote(data))
   }
 }
-
-/*
-
-voteAnecdote(state, action) {
-      console.log(JSON.parse(JSON.stringify(state)))
-      console.log(JSON.parse(JSON.stringify(action)))
-
-      const id = action.payload
-      const votedAnecdote = state.find(a => a.id === id)
-      const updatedAnecdote = {
-        ...votedAnecdote,
-        votes: votedAnecdote.votes + 1
-      }
-      return state.map(a => a.id !== id ? a : updatedAnecdote)
-    }
-
-*/
 
 export const { addVote, appendAnecdote, setAnecdotes } = anecdoteSlice.actions
 export default anecdoteSlice.reducer
